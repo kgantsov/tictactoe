@@ -1,5 +1,17 @@
 #:kivy 1.0.9
 
+<WinPopupContent>:
+    Label:
+        id: lbl
+        text: 'win!!!'
+    Button:
+        id: new_game
+        text: 'New game'
+        on_release: root.new_game()
+    Button:
+        id: dismiss
+        text: 'Dissmiss'
+        on_release: root.dismiss()
 
 <TicTacToeGameGrid>:
     xo_cell_0: xo_cell_0
