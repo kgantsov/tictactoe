@@ -8,6 +8,7 @@ kivy.require('1.0.6')  # replace with your current kivy version !
 from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.button import Button
 from kivy.uix.label import Label
@@ -55,21 +56,19 @@ class TicTacToeGameGrid(GridLayout):
         self.player_1, self.player_2 = PlayerFabric.make_players(self.with_ai)
         self.cur_player = self.player_1
 
-    def new_game(self):
+    def new_game(self, instance):
         self.grid = '---------'
         self.cur_player = self.player_1
         for key, btn in self.cells.items():
             btn.text = ''
 
     def click(self, cell_num):
-        print 'The button <%s> is being pressed' % cell_num
-
         if is_win(self.grid):
-            self.win_popup()
+            self.result_popup()
             return
 
         if is_full(self.grid):
-            print 'full'
+            self.result_popup()
             return
 
         if self.is_correct_cell(cell_num):
@@ -87,7 +86,11 @@ class TicTacToeGameGrid(GridLayout):
         self.grid = move(self.grid, cell, symbol)
 
         if is_win(self.grid):
-            self.win_popup()
+            self.result_popup()
+            return
+
+        if is_full(self.grid):
+            self.result_popup()
             return
 
         if self.cur_player == self.player_1:
@@ -95,18 +98,32 @@ class TicTacToeGameGrid(GridLayout):
         else:
             self.cur_player = self.player_1
 
-    def win_popup(self):
-        print '$$$$$$$$$$', self.cur_player.symbol
+    def result_popup(self):
+        if is_win(self.grid):
+            title = 'Congratulation!!!'
+            message = '%s win!!!' % self.cur_player.title
+        elif is_full(self.grid):
+            title = 'Draw'
+            message = 'Draw'
+
+        new_game_btn = Button(text='New game', size_hint_y=None, height=50)
+        close_btn = Button(text='Close', size_hint_y=None, height=50)
+        content = BoxLayout(orientation='vertical')
+        content.add_widget(Label(text=message))
+        buttons = BoxLayout(orientation='horizontal')
+
+        buttons.add_widget(new_game_btn)
+        buttons.add_widget(close_btn)
+        content.add_widget(buttons)
         popup = Popup(
-            title='Win!!',
-            content=Label(text='%s win!!!' % self.cur_player.title),
+            title=title,
+            content=content,
             size_hint=(None, None),
-            size=(400, 400)
+            size=(300, 200)
         )
-        # popup.add_widget(Label(text='%s win!!!' % self.cur_player.title))
-        # popup.add_widget(WinPopupContent())
-        # popup.add_widget(Button(text='New game!!!'))
-        # popup.add_widget(Button(text='Dismiss!!!'))
+        close_btn.bind(on_release=popup.dismiss)
+        new_game_btn.bind(on_release=self.new_game)
+        new_game_btn.bind(on_release=popup.dismiss)
         popup.open()
 
 
