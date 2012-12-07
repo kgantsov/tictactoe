@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from AI import minimax, is_full, is_win, move
+from AI import minimax
 
 
 class Player():
