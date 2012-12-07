@@ -59,7 +59,7 @@ class TicTacToeGameGrid(StackLayout):
     def new_game(self):
         self.grid = '---------'
         for key, btn in self.cells.items():
-            btn.text = ''
+            btn.background_normal = 'images/blank.png'
 
         self.player_1, self.player_2 = PlayerFabric.make_players(self.with_ai)
         self.cur_player = self.player_1
@@ -88,7 +88,7 @@ class TicTacToeGameGrid(StackLayout):
         return self.grid[cell_num] == '-' and not self.cells[cell_num].text
 
     def set_symbol(self, cell, symbol):
-        self.cells[cell].text = symbol
+        self.cells[cell].background_normal = 'images/%s.png' % symbol.lower()
         self.grid = move(self.grid, cell, symbol)
 
         if is_win(self.grid):
