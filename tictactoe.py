@@ -6,7 +6,7 @@ import kivy
 kivy.require('1.0.6')  # replace with your current kivy version !
 
 from kivy.app import App
-from kivy.uix.gridlayout import GridLayout
+from kivy.uix.stacklayout import StackLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.button import Button
@@ -17,7 +17,7 @@ from AI import is_full, is_win, move
 from Player import PlayerFabric
 
 
-class TicTacToeGameGrid(GridLayout):
+class TicTacToeGameGrid(StackLayout):
     player = True
     with_ai = True
 
@@ -30,6 +30,7 @@ class TicTacToeGameGrid(GridLayout):
     xo_cell_6 = ObjectProperty(None)
     xo_cell_7 = ObjectProperty(None)
     xo_cell_8 = ObjectProperty(None)
+    with_ai_switch = ObjectProperty(None)
 
     grid = '---------'
 
@@ -48,14 +49,24 @@ class TicTacToeGameGrid(GridLayout):
             8: self.xo_cell_8
         }
 
+        self.with_ai_switch.bind(active=self.with_ai_switch_change)
+
+        self.new_game()
+
+    def on_new_game(self, instance):
+        self.new_game()
+
+    def new_game(self):
+        self.grid = '---------'
+        for key, btn in self.cells.items():
+            btn.text = ''
+
         self.player_1, self.player_2 = PlayerFabric.make_players(self.with_ai)
         self.cur_player = self.player_1
 
-    def new_game(self, instance):
-        self.grid = '---------'
-        self.cur_player = self.player_1
-        for key, btn in self.cells.items():
-            btn.text = ''
+    def with_ai_switch_change(self, instance, enable):
+        self.with_ai = enable
+        self.new_game()
 
     def click(self, cell_num):
         if is_win(self.grid):
@@ -117,7 +128,7 @@ class TicTacToeGameGrid(GridLayout):
             size=(300, 200)
         )
         close_btn.bind(on_release=popup.dismiss)
-        new_game_btn.bind(on_release=self.new_game)
+        new_game_btn.bind(on_release=self.on_new_game)
         new_game_btn.bind(on_release=popup.dismiss)
         popup.open()
 
