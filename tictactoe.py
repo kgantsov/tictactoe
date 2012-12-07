@@ -7,7 +7,6 @@ kivy.require('1.0.6')  # replace with your current kivy version !
 
 from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
-from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.button import Button
@@ -16,10 +15,6 @@ from kivy.properties import ObjectProperty
 
 from AI import is_full, is_win, move
 from Player import PlayerFabric
-
-
-class WinPopupContent(FloatLayout):
-    pass
 
 
 class TicTacToeGameGrid(GridLayout):
