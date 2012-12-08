@@ -12,6 +12,7 @@
     xo_cell_7: xo_cell_7
     xo_cell_8: xo_cell_8
     with_ai_switch: with_ai_switch
+    complexity_spiner: complexity_spiner
 
     BoxLayout:
         size_hint: 1, 1
@@ -20,7 +21,17 @@
         BoxLayout:
             padding: 10
             spacing: 10
+            height: 50
             size_hint: 1, None
+
+            Label:
+                text: 'complexity'
+                height: 50
+
+            Spinner:
+                id: complexity_spiner
+                text: 'Hard'
+                values: 'Hard', 'Normal', 'Easy'
 
             Label:
                 text: 'With computer'

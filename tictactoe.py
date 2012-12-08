@@ -20,6 +20,7 @@ from Player import PlayerFabric
 class TicTacToeGameGrid(StackLayout):
     player = True
     with_ai = True
+    complexity = 'Hard'
 
     xo_cell_0 = ObjectProperty(None)
     xo_cell_1 = ObjectProperty(None)
@@ -31,6 +32,7 @@ class TicTacToeGameGrid(StackLayout):
     xo_cell_7 = ObjectProperty(None)
     xo_cell_8 = ObjectProperty(None)
     with_ai_switch = ObjectProperty(None)
+    complexity_spiner = ObjectProperty(None)
 
     grid = '---------'
 
@@ -50,6 +52,7 @@ class TicTacToeGameGrid(StackLayout):
         }
 
         self.with_ai_switch.bind(active=self.with_ai_switch_change)
+        self.complexity_spiner.bind(text=self.complexity_spiner_change)
 
         self.new_game()
 
@@ -61,11 +64,18 @@ class TicTacToeGameGrid(StackLayout):
         for key, btn in self.cells.items():
             btn.background_normal = 'images/blank.png'
 
-        self.player_1, self.player_2 = PlayerFabric.make_players(self.with_ai)
+        self.player_1, self.player_2 = PlayerFabric.make_players(
+            self.with_ai,
+            self.complexity
+        )
         self.cur_player = self.player_1
 
     def with_ai_switch_change(self, instance, enable):
         self.with_ai = enable
+        self.new_game()
+
+    def complexity_spiner_change(self, instance, text):
+        self.complexity = text
         self.new_game()
 
     def click(self, cell_num):
