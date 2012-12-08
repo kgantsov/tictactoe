@@ -40,9 +40,17 @@ class Computer(Player):
         self.complexity = complexity
 
     def move(self, grid):
+        avaliable_moves = self._get_avaliable_moves(grid)
+
         if random.randint(1, 12) <= self.complexities[self.complexity]:
-            avaliable_moves = self._get_avaliable_moves(grid)
             return random.choice(avaliable_moves)
+
+        if len(avaliable_moves) == 8:
+            x = grid.find('X')
+            if x != 4:
+                return 4
+
+            return random.choice([0, 2, 6, 8])
 
         score, move = minimax(grid, self.symbol)
         if move != None:
