@@ -89,10 +89,10 @@ class TicTacToeGameGrid(StackLayout):
 
         if self.is_correct_cell(cell_num):
             self.set_symbol(cell_num, self.cur_player.symbol)
-            move = self.cur_player.move(self.grid)
+            cur_move = self.cur_player.move(self.grid)
 
-            if move != None:
-                self.set_symbol(move, self.cur_player.symbol)
+            if cur_move != None:
+                self.set_symbol(cur_move, self.cur_player.symbol)
 
     def is_correct_cell(self, cell_num):
         return self.grid[cell_num] == '-' and not self.cells[cell_num].text
